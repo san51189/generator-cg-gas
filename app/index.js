@@ -18,10 +18,10 @@ var CgangularGenerator = module.exports = function CgangularGenerator(args, opti
                 marker: cgUtils.JS_MARKER,
                 template: '<script src="<%= filename %>"></script>'
             },
-            less: {
+            scss: {
                 relativeToModule: true,
-                file: '<%= module %>.less',
-                marker: cgUtils.LESS_MARKER,
+                file: '<%= module %>.scss',
+                marker: cgUtils.SCSS_MARKER,        
                 template: '@import "<%= filename %>";'
             }
         };

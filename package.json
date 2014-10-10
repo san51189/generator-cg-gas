@@ -1,22 +1,24 @@
 {
-  "name": "generator-cg-angular",
-  "version": "3.1.2",
-  "description": "Yeoman Generator for Enterprise Angular projects.",
+  "name": "generator-cg-gas",
+  "version": "3.1.1",
+  "description": "Yeoman Generator for Enterprise Angular projects, with Gulp Angular Sass",
   "keywords": [
     "yeoman-generator",
-    "angular"
+    "angular",
+    "gulp",
+    "sass"
   ],
-  "homepage": "https://github.com/cgross/generator-cg-angular",
-  "bugs": "https://github.com/cgross/generator-cg-angular/issues",
+  "homepage": "https://github.com/Lunatic83/generator-cg-gas",
+  "bugs": "https://github.com/Lunatic83/generator-cg-gas/issues",
   "author": {
-    "name": "Chris Gross",
-    "email": "schtoo@schtoo.com",
-    "url": "https://github.com/cgross"
+    "name": "Gaspare Scherma",
+    "email": "gaspare.scherma@gmail.com",
+    "url": "https://github.com/Lunatic83"
   },
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/cgross/generator-cg-angular.git"
+    "url": "git://github.com/Lunatic83/generator-cg-gas.git"
   },
   "scripts": {
     "test": "mocha"

@@ -9,6 +9,7 @@ var ngParseModule = require('ng-parse-module');
 
 exports.JS_MARKER = "<!-- Add New Component JS Above -->";
 exports.LESS_MARKER = "/* Add Component LESS Above */";
+exports.SCSS_MARKER = "/* Add Component SCSS Above */";
 
 exports.ROUTE_MARKER = "/* Add New Routes Above */";
 exports.STATE_MARKER = "/* Add New States Above */";
