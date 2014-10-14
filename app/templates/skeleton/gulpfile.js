@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 // generated on <%= (new Date).toISOString().split('T')[0] %> using <%= pkg.name %> <%= pkg.version %>
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
@@ -10,8 +10,9 @@ gulp.task('styles', function () {
       style: 'expanded',
       precision: 10
     }))  
-    .pipe($.autoprefixer('last 1 version'))
-    .pipe(gulp.dest('.tmp/styles'));
+    .pipe($.autoprefixer({browsers: ['last 3 versions','last 3 Android versions','last 3 ChromeAndroid versions'], cascade: true}))
+    .pipe(gulp.dest('.tmp/styles'))
+    .pipe($.size());
 });
 
 gulp.task('jshint', function () {
@@ -25,17 +26,18 @@ gulp.task('jshint', function () {
 gulp.task('html', ['styles'], function () {
   var lazypipe = require('lazypipe');
   var cssChannel = lazypipe()
-    .pipe($.csso)
-    .pipe($.replace, 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap','fonts');
-  var assets = $.useref.assets({searchPath: '{.tmp,app}'});
+    .pipe($.csso);
+    //.pipe($.replace, 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap','fonts');
+  var assets = $.useref.assets({searchPath: '{.tmp,.}'});
 
-  return gulp.src('app/*.html')
+  return gulp.src('*.html')
     .pipe(assets)
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', cssChannel()))
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist'))
+    .pipe($.size());
 });
 
 gulp.task('images', function () {
@@ -92,12 +94,12 @@ gulp.task('serve', ['connect', 'styles'], function () {
 // inject bower components
 gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
-  gulp.src('app/styles/*.scss')
+  gulp.src('*.scss')
     .pipe(wiredep())
-    .pipe(gulp.dest('app/styles'));
-  gulp.src('app/*.html')
+    .pipe(gulp.dest('.'));
+  gulp.src('*.html')
     .pipe(wiredep({exclude: ['bootstrap-sass-official']}))
-    .pipe(gulp.dest('app'));
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('watch', ['connect', 'serve'], function () {
@@ -105,13 +107,13 @@ gulp.task('watch', ['connect', 'serve'], function () {
 
   // watch for changes
   gulp.watch([
-    'app/*.html',
+    '*.html',
     '.tmp/styles/**/*.css',
-    'app/scripts/**/*.js',
-    'app/images/**/*'
+    '**/*.js',
+    'images/**/*'
   ]).on('change', $.livereload.changed);
 
-  gulp.watch('app/styles/**/*.scss', ['styles']);
+  gulp.watch('**/*.scss', ['styles']);
   gulp.watch('bower.json', ['wiredep']);
 });
 
