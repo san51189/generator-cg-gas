@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
 gulp.task('styles', function () {
-  return gulp.src('app.scss')
+  return gulp.src('app/app.scss')
     .pipe($.plumber())
     .pipe($.rubySass({
       style: 'expanded',
@@ -16,7 +16,7 @@ gulp.task('styles', function () {
 });
 
 gulp.task('jshint', function () {
-  return gulp.src(['!node_modules/**','!.grunt/**','!dist/**','!bower_components/**','**/*.js',])
+  return gulp.src(['!node_modules/**','!.grunt/**','!dist/**','!bower_components/**','app/**/*.js',])
   //return gulp.src('app/scripts/**/*.js')
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
@@ -28,9 +28,9 @@ gulp.task('html', ['styles'], function () {
   var cssChannel = lazypipe()
     .pipe($.csso);
     //.pipe($.replace, 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap','fonts');
-  var assets = $.useref.assets({searchPath: '{.tmp,.}'});
+  var assets = $.useref.assets({searchPath: '{.tmp,app}'});
 
-  return gulp.src('*.html')
+  return gulp.src('app/*.html')
     .pipe(assets)
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', cssChannel()))
@@ -41,7 +41,7 @@ gulp.task('html', ['styles'], function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src('images/**/*')
+  return gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true
@@ -50,7 +50,7 @@ gulp.task('images', function () {
 });
 
 gulp.task('fonts', function () {
-  return gulp.src(require('main-bower-files')().concat('fonts/**/*'))
+  return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
     .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
     .pipe($.flatten())
     .pipe(gulp.dest('dist/fonts'));
@@ -73,7 +73,7 @@ gulp.task('connect', function () {
   var serveIndex = require('serve-index');
   var app = require('connect')()
     .use(require('connect-livereload')({port: 35729}))
-    .use(serveStatic('.'))
+    .use(serveStatic('app'))
     .use(serveStatic('.tmp'))
     // paths to bower_components should be relative to the current file
     // e.g. in index.html you should use ../bower_components
@@ -94,10 +94,10 @@ gulp.task('serve', ['connect', 'styles'], function () {
 // inject bower components
 gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
-  gulp.src('*.scss')
+  gulp.src('app/*.scss')
     .pipe(wiredep())
     .pipe(gulp.dest('.'));
-  gulp.src('*.html')
+  gulp.src('app/*.html')
     .pipe(wiredep({exclude: ['bootstrap-sass-official']}))
     .pipe(gulp.dest('.'));
 });
@@ -107,13 +107,13 @@ gulp.task('watch', ['connect', 'serve'], function () {
 
   // watch for changes
   gulp.watch([
-    '*.html',
+    'app/*.html',
     '.tmp/styles/**/*.css',
-    '**/*.js',
-    'images/**/*'
+    'app/**/*.js',
+    'app/images/**/*'
   ]).on('change', $.livereload.changed);
 
-  gulp.watch('**/*.scss', ['styles']);
+  gulp.watch('app/**/*.scss', ['styles']);
   gulp.watch('bower.json', ['wiredep']);
 });
 
