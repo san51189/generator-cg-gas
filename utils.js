@@ -13,6 +13,7 @@ exports.SCSS_MARKER = "/* Add Component SCSS Above */";
 
 exports.ROUTE_MARKER = "/* Add New Routes Above */";
 exports.STATE_MARKER = "/* Add New States Above */";
+exports.SRC_APP = 'app/';
 
 exports.addToFile = function(filename,lineToAdd,beforeMarker){
 	try {
@@ -43,6 +44,7 @@ exports.processTemplates = function(name,dir,type,that,defaultDir,configName,mod
     if(that.config.get(configName)){
         templateDirectory = path.join(process.cwd(),that.config.get(configName));
     }
+
     _.chain(fs.readdirSync(templateDirectory))
         .filter(function(template){
             return template[0] !== '.';
@@ -126,7 +128,7 @@ exports.getParentModule = function(dir){
 exports.askForModule = function(type,that,cb){
 
     var modules = that.config.get('modules');
-    var mainModule = ngParseModule.parse('app.js');
+    var mainModule = ngParseModule.parse(exports.SRC_APP+'app.js');
     mainModule.primary = true;
 
     if (!modules || modules.length === 0) {

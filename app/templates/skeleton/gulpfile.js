@@ -41,7 +41,7 @@ gulp.task('html', ['styles'], function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
+  return gulp.src('images/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true
@@ -50,7 +50,7 @@ gulp.task('images', function () {
 });
 
 gulp.task('fonts', function () {
-  return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
+  return gulp.src(require('main-bower-files')().concat('fonts/**/*'))
     .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
     .pipe($.flatten())
     .pipe(gulp.dest('dist/fonts'));
@@ -73,12 +73,12 @@ gulp.task('connect', function () {
   var serveIndex = require('serve-index');
   var app = require('connect')()
     .use(require('connect-livereload')({port: 35729}))
-    .use(serveStatic('app'))
+    .use(serveStatic('.'))
     .use(serveStatic('.tmp'))
     // paths to bower_components should be relative to the current file
-    // e.g. in app/index.html you should use ../bower_components
+    // e.g. in index.html you should use ../bower_components
     .use('/bower_components', serveStatic('bower_components'))
-    .use(serveIndex('app'));
+    .use(serveIndex('.'));
 
   require('http').createServer(app)
     .listen(9000)
