@@ -23,7 +23,8 @@ util.inherits(ModuleGenerator, yeoman.generators.NamedBase);
 ModuleGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
     var name = this.name;
-    var defaultDir = path.join(this.name,'/');
+    var defaultDir = 'app/'+ path.join(this.name,'/'); //exports.SRC_APP
+
 
     var prompts = [
         {

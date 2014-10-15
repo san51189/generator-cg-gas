@@ -34,7 +34,7 @@ ModalGenerator.prototype.files = function files() {
 	    console.log('  Open this modal by using ' + chalk.bold('angular-ui-bootstrap') + ' module\'s ' + chalk.bold('$modal') + ' service:');
 	    console.log('');
 	    console.log('  $modal.open({');
-	    console.log('      templateUrl: \'' + path.join(this.dir,this.name + '.html') + '\',');
+	    console.log('      templateUrl: \'' + path.join(this.dir,this.name + '.html').replace(/app\//g,'') + '\',');
 	    console.log('      controller: \''+ this.ctrlname +'\'');
 	    console.log('  }).result.then(function(result){');
 	    console.log('      //do something with the result');

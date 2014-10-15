@@ -17,7 +17,7 @@ exports.SRC_APP = 'app/';
 
 exports.addToFile = function(filename,lineToAdd,beforeMarker){
 	try {
-		var fullPath = path.resolve(process.cwd(),filename);
+		var fullPath = path.resolve(process.cwd()+'/'+exports.SRC_APP,filename);
 		var fileSrc = fs.readFileSync(fullPath,'utf8');
 
 		var indexOf = fileSrc.indexOf(beforeMarker);
@@ -81,6 +81,7 @@ exports.inject = function(filename,that,module) {
             injectFileRef = path.relative(path.dirname(module.file),filename);
         }
         injectFileRef = injectFileRef.replace(/\\/g,'/');
+        injectFileRef = injectFileRef.replace(/app\//g,'');  //exports.SRC_APP
         var lineTemplate = _.template(config.template)({filename:injectFileRef});
         exports.addToFile(configFile,lineTemplate,config.marker);
         that.log.writeln(chalk.green(' updating') + ' %s',path.basename(configFile));
