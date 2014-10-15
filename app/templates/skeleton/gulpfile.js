@@ -78,7 +78,7 @@ gulp.task('connect', function () {
     // paths to bower_components should be relative to the current file
     // e.g. in index.html you should use ../bower_components
     .use('/bower_components', serveStatic('bower_components'))
-    .use(serveIndex('.'));
+    .use(serveIndex('app'));
 
   require('http').createServer(app)
     .listen(9000)
@@ -96,14 +96,14 @@ gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
   gulp.src('app/*.scss')
     .pipe(wiredep())
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('app/styles'));
   gulp.src('app/*.html')
     .pipe(wiredep({exclude: ['bootstrap-sass-official']}))
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('app'));
 });
 
 gulp.task('watch', ['connect', 'serve'], function () {
-  $.livereload.listen();
+  var server = $.livereload();
 
   // watch for changes
   gulp.watch([
@@ -111,11 +111,14 @@ gulp.task('watch', ['connect', 'serve'], function () {
     '.tmp/styles/**/*.css',
     'app/**/*.js',
     'app/images/**/*'
-  ]).on('change', $.livereload.changed);
+  ]).on('change', function(file){
+    server.changed(file.path);
+  });
 
   gulp.watch('app/**/*.scss', ['styles']);
   gulp.watch('bower.json', ['wiredep']);
 });
+
 
 gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
