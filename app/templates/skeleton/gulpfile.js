@@ -108,17 +108,21 @@ gulp.task('watch', ['connect', 'serve'], function () {
   
   // watch for changes
   gulp.watch([
+    '.tmp/styles/*.css',
     'app/*.html',
-    '.tmp/styles/**/*.css',
-    'app/**/*.js',
+    'app/**/*',    
     'app/images/**/*'
   ]).on('change', function(file){
     server.changed(file.path);
   });
 
   gulp.watch('app/**/*.scss', ['styles']);
+  gulp.watch('app/**/**/*.scss', ['styles']);
+  gulp.watch('app/**/**/**/*.scss', ['styles']);
   gulp.watch('bower.json', ['wiredep']);
 });
+
+
 
 
 gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () {
