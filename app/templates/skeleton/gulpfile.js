@@ -103,8 +103,9 @@ gulp.task('wiredep', function () {
 });
 
 gulp.task('watch', ['connect', 'serve'], function () {
+  $.livereload.listen();
   var server = $.livereload();
-
+  
   // watch for changes
   gulp.watch([
     'app/*.html',
