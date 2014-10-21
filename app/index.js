@@ -38,31 +38,53 @@ util.inherits(CgangularGenerator, yeoman.generators.Base);
 CgangularGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
 
-    var prompts = [{
-        name: 'appname',
-        message: 'What would you like the angular app/module name to be?',
-        default: path.basename(process.cwd())
-    }];
+    if(this.options.appoptions===undefined || this.options.appoptions.name===undefined){
+        var prompts = [{
+            name: 'appname',
+            message: 'What would you like the angular app/module name to be?',
+            default: path.basename(process.cwd())
+        }];
 
-    this.prompt(prompts, function (props) {
-        this.appname = props.appname;
+        this.prompt(prompts, function (props) {
+            this.appname = props.appname;
+            cb();
+        }.bind(this));
+    }else{
+        this.appname = this.options.appoptions.name;
         cb();
-    }.bind(this));
+    }
+
 };
 
 CgangularGenerator.prototype.askForUiRouter = function askFor() {
     var cb = this.async();
 
-    var prompts = [{
-        name: 'router',
-        type:'list',
-        message: 'Which router would you like to use?',
-        default: 0,
-        choices: ['Standard Angular Router','Angular UI Router']
-    }];
+    if(this.options.appoptions===undefined || this.options.appoptions.uirouter===undefined){
+        var prompts = [{
+            name: 'router',
+            type:'list',
+            message: 'Which router would you like to use?',
+            default: 0,
+            choices: ['Standard Angular Router','Angular UI Router']
+        }];
 
-    this.prompt(prompts, function (props) {
-        if (props.router === 'Angular UI Router') {
+        this.prompt(prompts, function (props) {
+            if (props.router === 'Angular UI Router') {
+                this.uirouter = true;
+                this.routerJs = 'bower_components/angular-ui-router/release/angular-ui-router.js';
+                this.routerModuleName = 'ui.router';
+                this.routerViewDirective = 'ui-view';
+            } else {
+                this.uirouter = false;
+                this.routerJs = 'bower_components/angular-route/angular-route.js';
+                this.routerModuleName = 'ngRoute';
+                this.routerViewDirective = 'ng-view';
+            }
+            this.config.set('uirouter',this.uirouter);
+            cb();
+        }.bind(this));
+    }else{
+        if(this.options.appoptions.uirouter){
             this.uirouter = true;
             this.routerJs = 'bower_components/angular-ui-router/release/angular-ui-router.js';
             this.routerModuleName = 'ui.router';
@@ -73,9 +95,11 @@ CgangularGenerator.prototype.askForUiRouter = function askFor() {
             this.routerModuleName = 'ngRoute';
             this.routerViewDirective = 'ng-view';
         }
+
         this.config.set('uirouter',this.uirouter);
         cb();
-    }.bind(this));
+    }
+
 };
 
 CgangularGenerator.prototype.app = function app() {
