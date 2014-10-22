@@ -27,7 +27,7 @@ var CgangularGenerator = module.exports = function CgangularGenerator(args, opti
         };
         this.config.set('inject',inject);
         this.config.save();
-        this.installDependencies({ skipInstall: options['skip-install'] });
+        this.installDependencies({ skipInstall: options['skip-install'], callback: options.callback});
     });
 
     this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));

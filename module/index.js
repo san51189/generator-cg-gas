@@ -26,25 +26,35 @@ ModuleGenerator.prototype.askFor = function askFor() {
     var defaultDir = 'app/'+ path.join(this.name,'/'); //exports.SRC_APP
 
 
-    var prompts = [
-        {
-            name:'dir',
-            message:'Where would you like to create the module (must specify a subdirectory)?',
-            default: defaultDir,
-            validate: function(value) {
-                value = _.str.trim(value);
-                if (_.isEmpty(value) || value[0] === '/' || value[0] === '\\') {
-                    return 'Please enter a subdirectory.';
+    if(this.options.moduleoptions===undefined){
+        var prompts = [
+            {
+                name:'dir',
+                message:'Where would you like to create the module (must specify a subdirectory)?',
+                default: defaultDir,
+                validate: function(value) {
+                    value = _.str.trim(value);
+                    if (_.isEmpty(value) || value[0] === '/' || value[0] === '\\') {
+                        return 'Please enter a subdirectory.';
+                    }
+                    return true;
                 }
-                return true;
             }
-        }
-    ];
+        ];
 
-    this.prompt(prompts, function (props) {
-        this.dir = path.join(props.dir,'/');
+        this.prompt(prompts, function (props) {
+            this.dir = path.join(props.dir,'/');
+            cb();
+        }.bind(this));
+    }else{
+        if(this.options.moduleoptions.defaultDir===undefined) 
+            this.dir=defaultDir;
+        else 
+            this.dir = this.options.moduleoptions.defaultDir;
+        
         cb();
-    }.bind(this));
+    }
+
 };
 
 ModuleGenerator.prototype.files = function files() {
