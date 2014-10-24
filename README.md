@@ -1,4 +1,4 @@
-#generator-cg-angular
+#generator-cg-gas
 
 >Yeoman Generator for Enterprise Angular Projects with Gulp and Sass
 
