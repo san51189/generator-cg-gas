@@ -22,17 +22,24 @@ util.inherits(PartialGenerator, yeoman.generators.NamedBase);
 PartialGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
 
-    var prompts = [
-        {
-            name: 'route',
-            message: 'Enter your route url (i.e. /mypartial/:id).  If you don\'t want a route added for you, leave this empty.'
-        }
-    ];
+    if(this.options.partialoptions===undefined){
+        var prompts = [
+            {
+                name: 'route',
+                message: 'Enter your route url (i.e. /mypartial/:id).  If you don\'t want a route added for you, leave this empty.'
+            }
+        ];
 
-    this.prompt(prompts, function (props) {
-        this.route = props.route;
+        this.prompt(prompts, function (props) {
+            this.route = props.route;
+            cgUtils.askForModuleAndDir('partial',this,true,cb);
+        }.bind(this));
+    }else{
+        if(this.options.partialoptions.route!==undefined) 
+            this.route = this.options.partialoptions.route;
+
         cgUtils.askForModuleAndDir('partial',this,true,cb);
-    }.bind(this));
+    }
 };
 
 PartialGenerator.prototype.files = function files() {

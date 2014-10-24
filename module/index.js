@@ -47,30 +47,48 @@ ModuleGenerator.prototype.askFor = function askFor() {
             cb();
         }.bind(this));
     }else{
-        if(this.options.moduleoptions.defaultDir===undefined) 
+        if(this.options.defaultDir===undefined) 
             this.dir=defaultDir;
         else 
-            this.dir = this.options.moduleoptions.defaultDir;
+            this.dir = this.options.defaultDir;
         
-        cb();
+        var module = cgUtils.getParentModule(path.join(this.dir,'..'));
+        module.dependencies.modules.push(_.camelize(this.name));
+        module.save();
+        this.log.writeln(chalk.green(' updating') + ' %s',path.basename(module.file));
+
+        cgUtils.processTemplates(this.name,this.dir,'module',this,null,null,module);
+
+        var modules = this.config.get('modules');
+        if (!modules) {
+            modules = [];
+        }
+        modules.push({name:_.camelize(this.name),file:path.join(this.dir,this.name + '.js')});
+        this.config.set('modules',modules);
+        this.config.save();
+        
+        setTimeout(function(){
+            cb();   
+        },200)
     }
 
 };
 
 ModuleGenerator.prototype.files = function files() {
+    if(this.options.moduleoptions===undefined){
+        var module = cgUtils.getParentModule(path.join(this.dir,'..'));
+        module.dependencies.modules.push(_.camelize(this.name));
+        module.save();
+        this.log.writeln(chalk.green(' updating') + ' %s',path.basename(module.file));
 
-    var module = cgUtils.getParentModule(path.join(this.dir,'..'));
-    module.dependencies.modules.push(_.camelize(this.name));
-    module.save();
-    this.log.writeln(chalk.green(' updating') + ' %s',path.basename(module.file));
+        cgUtils.processTemplates(this.name,this.dir,'module',this,null,null,module);
 
-    cgUtils.processTemplates(this.name,this.dir,'module',this,null,null,module);
-
-    var modules = this.config.get('modules');
-    if (!modules) {
-        modules = [];
+        var modules = this.config.get('modules');
+        if (!modules) {
+            modules = [];
+        }
+        modules.push({name:_.camelize(this.name),file:path.join(this.dir,this.name + '.js')});
+        this.config.set('modules',modules);
+        this.config.save();
     }
-    modules.push({name:_.camelize(this.name),file:path.join(this.dir,this.name + '.js')});
-    this.config.set('modules',modules);
-    this.config.save();
 };

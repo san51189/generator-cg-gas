@@ -136,34 +136,49 @@ exports.askForModule = function(type,that,cb){
         cb.bind(that)(mainModule);
         return;
     }
-
+    
     var choices = _.pluck(modules,'name');
     choices.unshift(mainModule.name + ' (Primary Application Module)');
 
-    var prompts = [
-        {
-            name:'module',
-            message:'Which module would you like to place the new ' + type + '?',
-            type: 'list',
-            choices: choices,
-            default: 0
-        }
-    ];
+    if(that.options.selectedmodule===undefined){
+        var prompts = [
+            {
+                name:'module',
+                message:'Which module would you like to place the new ' + type + '?',
+                type: 'list',
+                choices: choices,
+                default: 0
+            }
+        ];
 
-    that.prompt(prompts, function (props) {
+        that.prompt(prompts, function (props) {
 
-        var i = choices.indexOf(props.module);
+            var i = choices.indexOf(props.module);
 
+            var module;
+
+            if (i === 0) {
+                module = mainModule;
+            } else {
+                module = ngParseModule.parse(modules[i-1].file);
+            }
+
+            cb.bind(that)(module);
+        }.bind(that));
+    }else{
+        var i = choices.indexOf(that.options.selectedmodule);
         var module;
 
         if (i === 0) {
             module = mainModule;
-        } else {
+        } else if (i > 0){
             module = ngParseModule.parse(modules[i-1].file);
+        } else {
+            this.log.writeln("ERROR: module ("+that.options.selectedmodule+") is not present");
         }
 
         cb.bind(that)(module);
-    }.bind(that));
+    }
 
 };
 
@@ -243,8 +258,12 @@ exports.askForDir = function(type,that,module,ownDir,cb){
 
     };
 
-    that.prompt(dirPrompt,dirPromptCallback);
-
+    if(that.options.defaultDir===undefined) 
+        that.prompt(dirPrompt,dirPromptCallback);
+    else {
+        that.dir = that.options.defaultDir;
+        cb();
+    }
 };
 
 exports.askForModuleAndDir = function(type,that,ownDir,cb) {

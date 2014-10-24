@@ -21,17 +21,22 @@ util.inherits(DirectiveGenerator, yeoman.generators.NamedBase);
 DirectiveGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
 
-    var prompts = [{
-        type:'confirm',
-        name: 'needpartial',
-        message: 'Does this directive need an external html file (i.e. partial)?',
-        default: true
-    }];
+    if(this.options.directiveoptions===undefined){
+        var prompts = [{
+            type:'confirm',
+            name: 'needpartial',
+            message: 'Does this directive need an external html file (i.e. partial)?',
+            default: true
+        }];
 
-    this.prompt(prompts, function (props) {
-        this.needpartial = props.needpartial;
+        this.prompt(prompts, function (props) {
+            this.needpartial = props.needpartial;
+            cgUtils.askForModuleAndDir('directive',this,this.needpartial,cb);
+        }.bind(this));
+    }else{
+        this.needpartial = this.options.directiveoptions.needpartial;
         cgUtils.askForModuleAndDir('directive',this,this.needpartial,cb);
-    }.bind(this));
+    }        
 
 };
 
@@ -46,6 +51,10 @@ DirectiveGenerator.prototype.files = function files() {
 
     this.htmlPath = path.join(this.dir,this.name + '.html').replace(/\\/g,'/');;
 
-    cgUtils.processTemplates(this.name,this.dir,'directive',this,defaultDir,configName,this.module);
+    if(this.options.directiveoptions===undefined){
+        cgUtils.processTemplates(this.name,this.dir,'directive',this,defaultDir,configName,this.module);
+    }else{
+        cgUtils.processTemplates(this.name,this.dir,'directive',this,defaultDir,null,this.module);
+    }
 
 };
