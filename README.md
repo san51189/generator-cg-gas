@@ -1,6 +1,6 @@
 #generator-cg-angular
 
->Yeoman Generator for Enterprise Angular Projects
+>Yeoman Generator for Enterprise Angular Projects with Gulp and Sass
 
 This generator follows the [Angular Best Practice Guidelines for Project Structure](http://blog.angularjs.org/2014/02/an-angularjs-style-guide-and-best.html).
 
@@ -15,6 +15,7 @@ Features
 * Integrates Bower for package management
 * Includes Yeoman subgenerators for directives, services, partials, filters, and modules.
 * Integrates LESS and includes Bootstrap via the source LESS files allowing you to reuse Bootstrap vars/mixins/etc.
+* Integrates SASS and includes Bootstrap via the source SASS files allowing you to reuse Bootstrap vars/mixins/etc.
 * Easily Testable - Each sub-generator creates a skeleton unit test.  Unit tests can be run via `grunt test` and they run automatically during the grunt watch that is active during `grunt serve`.
 
 Directory Layout
@@ -65,19 +66,19 @@ In this example, the user has chosen to group the app into an `admin` folder, a 
 Getting Started
 -------------
 
-Prerequisites: Node, Grunt, Yeoman, and Bower.  Once Node is installed, do:
+Prerequisites: Node, Grunt, Yeoman, Gulp and Bower.  Once Node is installed, do:
 
-    npm install -g grunt-cli yo bower
+    npm install -g grunt-cli yo bower gulp
 
 Next, install this generator:
 
-    npm install -g generator-cg-angular
+    npm install -g generator-cg-ggas
 
 To create a project:
 
     mkdir MyNewAwesomeApp
     cd MyNewAwesomeApp
-    yo cg-angular
+    yo cg-gas
 
 Grunt Tasks
 -------------
@@ -89,6 +90,19 @@ Now that the project is created, you have 3 simple Grunt commands available:
     grunt build   #Places a fully optimized (minified, concatenated, and more) in /dist
 
 When `grunt serve` is running, any changed javascript files will be linted using JSHint as well as have their appropriate unit tests executed.  Only the unit tests that correspond to the changed file will be run.  This allows for an efficient test driven workflow.
+
+Gulp Tasks
+-------------
+
+Now that the project is created, you have 3 simple Gulp commands available:
+
+    grunt serve   #This will run a development server with watch & livereload enabled.
+    grunt test    #Run local unit tests.
+    grunt build   #Places a fully optimized (minified, concatenated, and more) in /dist
+
+When `grunt serve` is running, any changed javascript files will be linted using JSHint as well as have their appropriate unit tests executed.  Only the unit tests that correspond to the changed file will be run.  This allows for an efficient test driven workflow.
+
+
 
 Yeoman Subgenerators
 -------------
@@ -104,18 +118,67 @@ There are generators for `directive`,`partial`,`service`, `filter`, `module`, an
 
 Running a generator:
 
-    yo cg-angular:directive my-awesome-directive
-    yo cg-angular:partial my-partial
-    yo cg-angular:service my-service
-    yo cg-angular:filter my-filter
-    yo cg-angular:module my-module
-    yo cg-angular:modal my-modal
+    yo cg-gas:directive my-awesome-directive
+    yo cg-gas:partial my-partial
+    yo cg-gas:service my-service
+    yo cg-gas:filter my-filter
+    yo cg-gas:module my-module
+    yo cg-gas:modal my-modal
+    yo cg-gas:architecture  (file containing architecture has to be done)
 
 The name paramater passed (i.e. 'my-awesome-directive') will be used as the file names.  The generators will derive appropriate class names from this parameter (ex. 'my-awesome-directive' will convert to a class name of 'MyAwesomeDirective').  Each sub-generator will ask for the folder in which to create the new skeleton files.  You may override the default folder for each sub-generator in the `.yo-rc.json` file.
 
 The modal subgenerator is a convenient shortcut to create partials that work as modals for Bootstrap v3.1 and Angular-UI-Bootstrap v0.10 (both come preconfigured with this generator).  If you choose not to use either of these libraries, simply don't use the modal subgenerator.
 
 Subgenerators are also customizable.  Please read [CUSTOMIZING.md](CUSTOMIZING.md) for details.
+
+Architecture
+-------------
+With the sub generator yo cg-gas:architecture you can generate the first stub architecture through a simple json file that describe the entire application.
+In this way is possible to startup more faster your app.
+
+Following this simple steps:
+
+    mkdir MyNewAwesomeApp
+    touch architecture.json
+        Example code:
+        {   "appname": "scloby",
+            "modules": [
+                { "name": "module1",
+                  "partials": [
+                                { "name": "partial1" }
+                              ],
+                  "services": [
+                                { "name": "service1" }                    
+                              ],
+                  "filters":  [
+                                { "name": "filter1" }
+                              ],
+                  "directives": [
+                                { "name": "directive1",
+                                  "needpartial": true
+                                }                    
+                              ],
+                  "modals": [
+                                {"name": "modal1"}
+                            ]
+                },
+                { "name": "module2",
+                  "partials": [
+                                {"name": "partial1"}
+                              ],
+                  "services": [
+                                {"name": "service1"},
+                                {"name": "service2"}
+                              ]       
+                }
+          ]
+        }
+    yo cg-gas:architecture
+
+This will create the first architecture structure.
+NOTE: becareful, when you start to code, is possible that if you run this subgenerator your code will be replaced with a new empty stub.
+
 
 Submodules
 -------------
@@ -154,6 +217,7 @@ Importantly, grunt-dom-munger uses CSS attribute selectors to manage the parsing
 
 Release History
 -------------
+* 24/10/2014 - v3.2.1 - Fork from cg-angular, main refactor to cg-gas for Sass and Gulp, new subgenerator architecture
 * 7/6/2014 - v3.1.2 - Fix for directive template URLs with backslashes on Windows.
 * 6/10/2014 - v3.1.1 - Fix for backslashes being used in injected routes/tags on subgenerators.
 * 5/1/2014 - v3.1.0 - New subgenerators for modules and modals.  Replaced grunt-contrib-jasmine with grunt-karma.  Karma allows us to test against actual browsers other than PhantomJS.
