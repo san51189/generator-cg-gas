@@ -1,0 +1,69 @@
+{
+  "appname": "scloby",
+  "modules": [
+    {
+      "name": "module1",
+      "partials": [
+        {
+          "name": "partial1"
+        },
+        {
+          "name": "partial2"
+        }
+      ],
+      "services": [
+        {
+          "name": "service1"
+        },
+        {
+          "name": "service2"
+        }
+      ],
+      "filters": [
+        {
+          "name": "filter1"
+        },
+        {
+          "name": "filter2"
+        }
+      ],
+      "directives": [
+        {
+          "name": "directive1",
+          "needpartial": true
+        },
+        {
+          "name": "directive2",
+          "needpartial": false
+        }
+      ],
+      "modals": [
+        {
+          "name": "modal1"
+        },
+        {
+          "name": "modal2"
+        }
+      ]
+    },
+    {
+      "name": "module2",
+      "partials": [
+        {
+          "name": "partial1"
+        },
+        {
+          "name": "partial2"
+        }
+      ],
+      "services": [
+        {
+          "name": "service1"
+        },
+        {
+          "name": "service2"
+        }
+      ]       
+    }
+  ]
+}
