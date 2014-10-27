@@ -14,6 +14,11 @@ _.mixin(_.str.exports());
 var ArchitectureGenerator = module.exports = function ArchitectureGenerator(args, options, config) {
 
     yeoman.generators.Base.apply(this, arguments);
+    console.log("ARGS: "+args);
+    yeoman.generators.Base.apply(this, arguments);
+
+    if(args!==undefined)
+        this.skipinit = args;
 
 };
 
@@ -215,11 +220,14 @@ ArchitectureGenerator.prototype.start = function start() {
 
     //  APP OK TERMINATO
     var appOptions = {
-        name: 'scloby',    //[required]
-        uirouter: true     //[optional]
+        name: this.architecture.appname,    //[required]
+        uirouter: this.architecture.uirouter     //[optional]
     };
 
-    //self.invoke("cg-gas", {options: {appname: this.architecture.appname, appoptions: appOptions, callback: chain}});
+
+    if(this.skipinit!=='skipinit')
+        self.invoke("cg-gas", {options: {appname: this.architecture.appname, appoptions: appOptions, callback: chain}});
+    
     chain(this.architecture);  //Sostituire al termine con la riga superiore
 
 };

@@ -53,23 +53,26 @@ ModuleGenerator.prototype.askFor = function askFor() {
             this.dir = this.options.defaultDir;
         
         var module = cgUtils.getParentModule(path.join(this.dir,'..'));
-        module.dependencies.modules.push(_.camelize(this.name));
-        module.save();
-        this.log.writeln(chalk.green(' updating') + ' %s',path.basename(module.file));
+        if(module!==undefined){
+            module.dependencies.modules.push(_.camelize(this.name));
+            module.save();
+            this.log.writeln(chalk.green(' updating') + ' %s',path.basename(module.file));
 
-        cgUtils.processTemplates(this.name,this.dir,'module',this,null,null,module);
+            cgUtils.processTemplates(this.name,this.dir,'module',this,null,null,module);
 
-        var modules = this.config.get('modules');
-        if (!modules) {
-            modules = [];
+            var modules = this.config.get('modules');
+            if (!modules) {
+                modules = [];
+            }
+            modules.push({name:_.camelize(this.name),file:path.join(this.dir,this.name + '.js')});
+            this.config.set('modules',modules);
+            this.config.save();
+            
+            setTimeout(function(){
+                cb();   
+            },200)
         }
-        modules.push({name:_.camelize(this.name),file:path.join(this.dir,this.name + '.js')});
-        this.config.set('modules',modules);
-        this.config.save();
         
-        setTimeout(function(){
-            cb();   
-        },200)
     }
 
 };

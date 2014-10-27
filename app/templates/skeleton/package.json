@@ -29,6 +29,7 @@
     "serve-static": "^1.6.4",
     "serve-index": "^1.4.0",
     "main-bower-files": "^2.1.0",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "async": "^0.2.10"
   }
 }
