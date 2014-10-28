@@ -14,11 +14,12 @@ _.mixin(_.str.exports());
 var ArchitectureGenerator = module.exports = function ArchitectureGenerator(args, options, config) {
 
     yeoman.generators.Base.apply(this, arguments);
-    console.log("ARGS: "+args);
     yeoman.generators.Base.apply(this, arguments);
 
-    if(args!==undefined)
-        this.skipinit = args;
+    if(args!==undefined && args=='skipinit')
+        this.skipinit = true;
+    else 
+        this.skipinit = false
 
 };
 
@@ -57,10 +58,10 @@ ArchitectureGenerator.prototype.start = function start() {
         self.invoke("cg-gas:module", {args: [moduleOptions.name], options: options}, cb);    
     }
 
-    var partial = function(name, module, cb){
+    var partial = function(name, module, route, cb){
         var partialOptions = {
             name: name,                     //[required]
-            route: '/mypartial333/:id'      //[required, not defined not set url for partial             
+            route: route      //[required, not defined not set url for partial             
         };
 
         var options = {
@@ -152,7 +153,7 @@ ArchitectureGenerator.prototype.start = function start() {
 
             for (var i in module.partials) {
               var partial = module.partials[i];
-              putInChain('partial',partial.name,module.name);
+              putInChain('partial',partial.name,module.name, partial.route);
             }
 
             for (var i in module.services) {
@@ -193,7 +194,7 @@ ArchitectureGenerator.prototype.start = function start() {
             if(arg0==='module')
                 module(arg1,cb);
             else if(arg0==='partial')
-                partial(arg1,arg2,cb);               
+                partial(arg1,arg2,arg3,cb); 
             else if(arg0==='service')
                 service(arg1,arg2,cb);     
             else  if(arg0==='directive')
@@ -225,8 +226,9 @@ ArchitectureGenerator.prototype.start = function start() {
     };
 
 
-    if(this.skipinit!=='skipinit')
+    if(!this.skipinit){
         self.invoke("cg-gas", {options: {appname: this.architecture.appname, appoptions: appOptions, callback: chain}});
+    }
     
     chain(this.architecture);  //Sostituire al termine con la riga superiore
 

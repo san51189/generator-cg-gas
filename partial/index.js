@@ -49,7 +49,7 @@ PartialGenerator.prototype.files = function files() {
     cgUtils.processTemplates(this.name,this.dir,'partial',this,null,null,this.module);
 
     if (this.route && this.route.length > 0){
-        var partialUrl = this.dir + this.name + '.html';
+        var partialUrl = this.dir + "/"+ this.name + '.html';
         cgUtils.injectRoute(this.module.file,this.config.get('uirouter'),this.name,this.route,partialUrl,this);
     }
 

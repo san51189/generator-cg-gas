@@ -96,9 +96,9 @@ Gulp Tasks
 
 Now that the project is created, you have 3 simple Gulp commands available:
 
-    grunt serve   #This will run a development server with watch & livereload enabled.
-    grunt test    #Run local unit tests.
-    grunt build   #Places a fully optimized (minified, concatenated, and more) in /dist
+    gulp serve   #This will run a development server with watch & livereload enabled.
+    gulp test    #Run local unit tests.
+    gulp build   #Places a fully optimized (minified, concatenated, and more) in /dist
 
 When `grunt serve` is running, any changed javascript files will be linted using JSHint as well as have their appropriate unit tests executed.  Only the unit tests that correspond to the changed file will be run.  This allows for an efficient test driven workflow.
 
