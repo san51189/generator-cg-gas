@@ -45,29 +45,42 @@ ArchitectureGenerator.prototype.start = function start() {
     var self = this;
     var chainQueueFunctions = [];
 
-    var module = function(name, cb){
+    var module = function(name, dir, cb){
         var moduleOptions = {
             name: name                     //[required]            
         };
 
+        var defaultDir = '';
+        if(dir) 
+            defaultDir = dir+'/'+name; 
+        else 
+            defaultDir = 'app/'+name ;
+
         var options = {
             moduleoptions: moduleOptions,
-            defaultDir : 'app/'+name        //[optional, not defined use app/<name> path] 
+            defaultDir :  defaultDir      //[optional, not defined use app/<name> path] 
         }
 
         self.invoke("cg-gas:module", {args: [moduleOptions.name], options: options}, cb);    
     }
 
-    var partial = function(name, module, route, cb){
+    var partial = function(name, module, moduleDir, route, cb){
         var partialOptions = {
             name: name,                     //[required]
             route: route      //[required, not defined not set url for partial             
         };
 
+        var defaultDir = '';
+        if(moduleDir) 
+            defaultDir = moduleDir+'/'+module+'/partial/'+name; 
+        else 
+            defaultDir = 'app/'+module+'/partial/'+name ;
+
+
         var options = {
             partialoptions: partialOptions, 
             selectedmodule: module,
-            defaultDir : 'app/'+module+'/partial/'+name //[optional, not defined use app/<module> path] 
+            defaultDir :  defaultDir //[optional, not defined use app/<module> path] 
         }
         
         self.invoke("cg-gas:partial", {args: [partialOptions.name], options: options});    
@@ -77,15 +90,21 @@ ArchitectureGenerator.prototype.start = function start() {
 
     }
 
-    var service = function(name, module, cb){
+    var service = function(name, module, moduleDir,  cb){
         var serviceOptions = {
             name: name                     //[required]
         };
 
+        var defaultDir = '';
+        if(moduleDir) 
+            defaultDir = moduleDir+'/'+module+'/service/'+name; 
+        else 
+            defaultDir = 'app/'+module+'/service/'+name  ;
+
         var options = {
             serviceoptions: serviceOptions, 
             selectedmodule: module,
-            defaultDir : 'app/'+module+'/service/'+name //[optional, not defined use app/<module> path] 
+            defaultDir : defaultDir //[optional, not defined use app/<module> path] 
         }
 
         self.invoke("cg-gas:service", {args: [serviceOptions.name], options: options});    
@@ -94,16 +113,22 @@ ArchitectureGenerator.prototype.start = function start() {
         },500)
     }
 
-    var directive = function(name, module, needpartial, cb){
+    var directive = function(name, module, moduleDir, needpartial, cb){
         var directiveOptions = {
             name: name,                    //[required]
             needpartial: needpartial        //[required] Y/n
         };
 
+        var defaultDir = '';
+        if(moduleDir) 
+            defaultDir = moduleDir+'/'+module+'/directive/'+name; 
+        else 
+            defaultDir = 'app/'+module+'/directive/'+name  ;
+
         var options = {
             directiveoptions: directiveOptions, 
             selectedmodule: module,
-            defaultDir : 'app/'+module+'/directive/'+name //[optional, not defined use app/<module> path] 
+            defaultDir :  defaultDir //[optional, not defined use app/<module> path] 
         }
 
         self.invoke("cg-gas:directive", {args: [directiveOptions.name], options: options});    
@@ -112,15 +137,22 @@ ArchitectureGenerator.prototype.start = function start() {
         },500)
     }
 
-    var filter = function(name, module, cb){
+    var filter = function(name, module, moduleDir, cb){
         var filterOptions = {
             name: name                     //[required]
         };
 
+        var defaultDir = '';
+        if(moduleDir) 
+            defaultDir = moduleDir+'/'+module+'/filter/'+name; 
+        else 
+            defaultDir = 'app/'+module+'/filter/'+name  ;
+
+
         var options = {
             filteroptions: filterOptions, 
             selectedmodule: module,
-            defaultDir : 'app/'+module+'/filter/'+name //[optional, not defined use app/<module> path] 
+            defaultDir : defaultDir  //[optional, not defined use app/<module> path] 
         }
 
         self.invoke("cg-gas:filter", {args: [filterOptions.name], options: options});    
@@ -129,15 +161,21 @@ ArchitectureGenerator.prototype.start = function start() {
         },500)
     }
 
-    var modal = function(name, module, cb){
+    var modal = function(name, module, moduleDir, cb){
         var modalOptions = {
             name: name                     //[required]
         };
 
+        var defaultDir = '';
+        if(moduleDir) 
+            defaultDir = moduleDir+'/'+module+'/modal/'+name; 
+        else 
+            defaultDir = 'app/'+module+'/modal/'+name  ;
+
         var options = {
             modaloptions: modalOptions, 
             selectedmodule: module,
-            defaultDir : 'app/'+module+'/modal/'+name //[optional, not defined use app/<module> path] 
+            defaultDir : defaultDir //[optional, not defined use app/<module> path] 
         }
 
         self.invoke("cg-gas:modal", {args: [modalOptions.name], options: options});    
@@ -149,31 +187,31 @@ ArchitectureGenerator.prototype.start = function start() {
     var chain = function(architecture){
         for (var i in architecture.modules) {
             var module = architecture.modules[i];
-            putInChain('module',module.name);
+            putInChain('module',module.name, module.dir);
 
             for (var i in module.partials) {
               var partial = module.partials[i];
-              putInChain('partial',partial.name,module.name, partial.route);
+              putInChain('partial',partial.name,module.name, module.dir, partial.route);
             }
 
             for (var i in module.services) {
               var service = module.services[i];
-              putInChain('service',service.name,module.name);
+              putInChain('service',service.name,module.name, module.dir);
             }
 
             for (var i in module.directives) {
               var directive = module.directives[i];
-              putInChain('directive',directive.name,module.name, directive.needpartial);
+              putInChain('directive',directive.name,module.name, module.dir , directive.needpartial);
             }
 
             for (var i in module.filters) {
               var filter = module.filters[i];
-              putInChain('filter',filter.name,module.name);
+              putInChain('filter',filter.name,module.name, module.dir);
             }
 
             for (var i in module.modals) {
               var modal = module.modals[i];
-              putInChain('modal',modal.name,module.name);
+              putInChain('modal',modal.name,module.name, module.dir);
             }         
         }
 
@@ -192,17 +230,17 @@ ArchitectureGenerator.prototype.start = function start() {
 
         var fnStub = function(cb){
             if(arg0==='module')
-                module(arg1,cb);
+                module(arg1,arg2,cb);
             else if(arg0==='partial')
-                partial(arg1,arg2,arg3,cb); 
+                partial(arg1,arg2,arg3,arg4,cb); 
             else if(arg0==='service')
-                service(arg1,arg2,cb);     
+                service(arg1,arg2,arg3,cb);     
             else  if(arg0==='directive')
-                directive(arg1,arg2,arg3,cb); 
+                directive(arg1,arg2,arg3,arg4,cb); 
             else  if(arg0==='filter')
-                filter(arg1,arg2,cb); 
+                filter(arg1,arg2,arg3,cb); 
             else  if(arg0==='modal')
-                modal(arg1,arg2,cb); 
+                modal(arg1,arg2,arg3,cb); 
             else
                 this.log.writeln("Subgenerator "+arg0+" is not defined");
 
@@ -225,10 +263,9 @@ ArchitectureGenerator.prototype.start = function start() {
         uirouter: this.architecture.uirouter     //[optional]
     };
 
-
-    if(!this.skipinit){
+    /*if(!this.skipinit){
         self.invoke("cg-gas", {options: {appname: this.architecture.appname, appoptions: appOptions, callback: chain}});
-    }
+    }*/   
     
     chain(this.architecture);  //Sostituire al termine con la riga superiore
 

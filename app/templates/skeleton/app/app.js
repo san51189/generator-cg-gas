@@ -1,4 +1,4 @@
-angular.module('<%= _.camelize(appname) %>', ['ui.bootstrap','ui.utils','<%= routerModuleName %>','ngAnimate']);
+angular.module('<%= _.camelize(appname) %>', ['ui.bootstrap','ui.utils','<%= routerModuleName %>','ngAnimate','templates']);
 <% if (!uirouter) { %>
 angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {
 
@@ -7,7 +7,8 @@ angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {
 
 });
 <% } %><% if (uirouter) { %>
-angular.module('<%= _.camelize(appname) %>').config(function($stateProvider, $urlRouterProvider) {
+angular.module('<%= _.camelize(appname) %>').config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
 
     /* Add New States Above */
     $urlRouterProvider.otherwise('/home');

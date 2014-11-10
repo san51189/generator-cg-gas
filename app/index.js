@@ -65,11 +65,11 @@ CgangularGenerator.prototype.askForUiRouter = function askFor() {
             type:'list',
             message: 'Which router would you like to use?',
             default: 0,
-            choices: ['Standard Angular Router','Angular UI Router']
+            choices: ['Standard Angular Router','Angular UI Router [optimized]']
         }];
 
         this.prompt(prompts, function (props) {
-            if (props.router === 'Angular UI Router') {
+            if (props.router === 'Angular UI Router [optimized]') {
                 this.uirouter = true;
                 this.routerJs = 'bower_components/angular-ui-router/release/angular-ui-router.js';
                 this.routerModuleName = 'ui.router';

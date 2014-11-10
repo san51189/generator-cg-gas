@@ -1,8 +1,9 @@
 {
-  "appname": "scloby",
+  "appname": "Application",
   "modules": [
     {
       "name": "module1",
+      "dir": "app/modules",
       "partials": [
         {
           "name": "partial1"
@@ -48,6 +49,7 @@
     },
     {
       "name": "module2",
+      "dir": "app/modules",
       "partials": [
         {
           "name": "partial1"
