@@ -138,9 +138,9 @@ With sub generators yo cg-gas:architecture you can generate the first stub archi
 In this way is possible to startup more faster your app.
 
 Following this simple steps:
-    $ mkdir MyNewAwesomeApp
-    $ yo cg-gas ..............    creates the entire application scafolds  [this generator is optimized for Angular UI Router]
-    $ touch architecture.json
+    mkdir MyNewAwesomeApp
+    yo cg-gas ..............    creates the entire application scafolds  [this generator is optimized for Angular UI Router]
+    touch architecture.json
         Example code:             cat and past json first draft into the file
         {   "appname": "scloby",
             "modules": [
@@ -174,7 +174,7 @@ Following this simple steps:
                 }
           ]
         }
-    $ yo cg-gas:architecture    scaffold your app 
+    yo cg-gas:architecture    scaffold your app 
 
 This will create the first architecture structure.
 NOTE: becareful, when you start to code, is possible that if you run this subgenerator your code will be replaced with a new empty stub.
