@@ -210,7 +210,7 @@ The resulting build loads only a few highly compressed files.
 
 Release History
 -------------
-* 19/11/2014 - v3.3.2 - Changed AngularJS from 1.2 to 1.3 and all other dependences, plus module fix folders
+* 19/11/2014 - v3.3.3 - Changed AngularJS from 1.2 to 1.3 and all other dependences, plus module fix folders
 * 24/10/2014 - v3.3.1a - Merging Gulp angular-kickstart management and app structure. 
 * 24/10/2014 - v3.2.1 - Fork from cg-angular, main refactor to cg-gas for Sass and Gulp, new subgenerator architecture
 * 7/6/2014 - v3.1.2 - Fix for directive template URLs with backslashes on Windows.
