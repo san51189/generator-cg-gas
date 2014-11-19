@@ -8,7 +8,10 @@ angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {
 });
 <% } %><% if (uirouter) { %>
 angular.module('<%= _.camelize(appname) %>').config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    });
 
     /* Add New States Above */
     $urlRouterProvider.otherwise('/home');

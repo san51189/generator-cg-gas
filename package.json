@@ -1,6 +1,6 @@
 {
   "name": "generator-cg-gas",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "Yeoman Generator for Enterprise Angular projects, with Gulp Angular Sass",
   "keywords": [
     "yeoman-generator",

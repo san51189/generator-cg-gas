@@ -192,7 +192,7 @@ exports.askForDir = function(type,that,module,ownDir,cb){
     if (!configedDir){
         configedDir = '.';
     }
-    var defaultDir = path.join(that.dir,configedDir,'/');
+    var defaultDir = path.join(that.dir+'/modules/',configedDir,'/');
     defaultDir = path.relative(process.cwd(),defaultDir);
 
     if (ownDir) {
